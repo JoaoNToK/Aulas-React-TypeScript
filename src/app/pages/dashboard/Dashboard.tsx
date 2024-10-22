@@ -1,12 +1,13 @@
 import { useCallback, useState } from "react";
 
-interface IListaItem {
+interface ITarefa {
+  id: number;
   title: string;
-  isSelected: boolean;
+  isCompleted: boolean;
 }
 
 export const Dashboard = () => {
-  const [lista, setLista] = useState<IListaItem[]>([]);
+  const [lista, setLista] = useState<ITarefa[]>([]);
   const handleInputKeyDown: React.KeyboardEventHandler<HTMLInputElement> =
     useCallback((e) => {
       if (e.key === "Enter") {
@@ -23,8 +24,9 @@ export const Dashboard = () => {
           return [
             ...oldlista,
             {
+              id: oldlista.length,
               title: value,
-              isSelected: false,
+              isCompleted: false,
             },
           ];
         });
@@ -36,25 +38,25 @@ export const Dashboard = () => {
       <p>Lista</p>
 
       <input onKeyDown={handleInputKeyDown} />
-      <p>{lista.filter((listIntem) => listIntem.isSelected).length}</p>
+      <p>{lista.filter((listIntem) => listIntem.isCompleted).length}</p>
 
       <ul>
         {lista.map((listIntem) => {
           return (
-            <li key={listIntem.title}>
+            <li key={listIntem.id}>
               <input
                 type="checkbox"
-                checked={listIntem.isSelected}
+                checked={listIntem.isCompleted}
                 onChange={() => {
                   setLista((oldLista) => {
                     return oldLista.map((oldlistItem) => {
-                      const newIsSelected =
+                      const newisCompleted =
                         oldlistItem.title === listIntem.title
-                          ? !oldlistItem.isSelected
-                          : oldlistItem.isSelected;
+                          ? !oldlistItem.isCompleted
+                          : oldlistItem.isCompleted;
                       return {
                         ...oldlistItem,
-                        isSelected: newIsSelected,
+                        isCompleted: newisCompleted,
                       };
                     });
                   });
